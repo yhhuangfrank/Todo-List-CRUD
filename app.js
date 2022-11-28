@@ -67,6 +67,29 @@ app.get("/todos/:id", (req, res) => {
     .catch((err) => console.log(err));
 });
 
+//* 導向修改todo內容頁面
+app.get("/todos/:id/edit", (req, res) => {
+  const id = req.params.id;
+  return Todo.findById(id)
+    .lean()
+    .then((todo) => res.render("edit", { todo }))
+    .catch((err) => console.log(err));
+});
+
+//* 收到edit表單POST請求
+app.post("/todos/:id/edit", (req, res) => {
+  const id = req.params.id;
+  const name = req.body.name;
+  return Todo.findById(id)
+    .then((todo) => {
+      //-將新的name更新到todo.name
+      todo.name = name;
+      return todo.save(); //-將更新好的todo儲存至db
+    })
+    .then(() => res.redirect(`/todos/${id}`)) //-更新成功則重新導向對應id的detail頁面
+    .catch((err) => console.log(err)); //-更新失敗的話則報錯誤
+});
+
 //- listen to server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost${port}`);

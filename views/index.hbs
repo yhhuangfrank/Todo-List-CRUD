@@ -6,6 +6,8 @@
       {{this.name}}
       {{! 為每個項目加上detail頁面連結，此處的id為MongoDB自動產生的流水號 }}
       <a href="/todos/{{this._id}}"> detail</a>
+      {{! 新增可供編輯的連結，導向對應頁面 }}
+      <a href="/todos/{{this._id}}/edit"> edit</a>
     </li>
 
   {{/each}}

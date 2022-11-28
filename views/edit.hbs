@@ -1,0 +1,6 @@
+{{! 修改todo頁面 }}
+<form action="/todos/{{todo._id}}/edit" method="POST">
+  <input type="text" name="name" placeholder="name" value="{{todo.name}}" />
+  <button type="submit">Save</button>
+  <a href="/">Back</a>
+</form>
