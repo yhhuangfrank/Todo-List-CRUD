@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
 //* 引入todo model
@@ -32,6 +33,9 @@ db.once("open", () => {
 app.engine("hbs", exphbs({ defaultLayouts: "main", extname: ".hbs" }));
 app.set("view engine", "hbs");
 
+//- bodyparser middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+
 //- set route
 app.get("/", (req, res) => {
   //- 取出Todo modeal 的所有資料
@@ -39,6 +43,18 @@ app.get("/", (req, res) => {
     .lean() //- 把Mongoose的model 物件轉為乾淨的Javascript資料陣列
     .then((todos) => res.render("index", { todos })) //- 將資料傳給index模板
     .catch((error) => console.error(error)); //- 錯誤處理
+});
+
+//* 新增頁面讓使用者新增新的todo
+app.get("/todos/new", (req, res) => {
+  return res.render("new");
+});
+//* 填寫完新todo的表單後，送往db更新
+app.post("/todos", (req, res) => {
+  const name = req.body.name;
+  return Todo.create({ name })
+    .then(() => res.redirect("/")) //-新增到db後導回首頁
+    .catch((err) => console.log(err));
 });
 
 //- listen to server
