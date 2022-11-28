@@ -24,7 +24,7 @@ db.once("open", () => {
   console.log(`mongodb connected!!`);
   //- 連線成功後發送新增資料要求,新增10筆資料
   for (let i = 0; i < 10; i += 1) {
-    Todo.create({ name: `name-{i}` });
+    Todo.create({ name: `name-${i}` });
   }
   console.log("done");
 });

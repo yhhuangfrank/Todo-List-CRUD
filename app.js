@@ -4,6 +4,8 @@ const app = express();
 const port = 3000;
 const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
+//* 引入todo model
+const Todo = require("./models/todo");
 
 //- 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== "production") {
@@ -32,7 +34,11 @@ app.set("view engine", "hbs");
 
 //- set route
 app.get("/", (req, res) => {
-  res.render("index");
+  //- 取出Todo modeal 的所有資料
+  Todo.find()
+    .lean() //- 把Mongoose的model 物件轉為乾淨的Javascript資料陣列
+    .then((todos) => res.render("index", { todos })) //- 將資料傳給index模板
+    .catch((error) => console.error(error)); //- 錯誤處理
 });
 
 //- listen to server
