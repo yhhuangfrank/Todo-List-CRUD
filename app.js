@@ -90,6 +90,15 @@ app.post("/todos/:id/edit", (req, res) => {
     .catch((err) => console.log(err)); //-更新失敗的話則報錯誤
 });
 
+//* 刪除todo請求
+app.post("/todos/:id/delete", (req, res) => {
+  const id = req.params.id;
+  return Todo.findById(id)
+    .then((todo) => todo.remove())
+    .then(() => res.redirect("/"))
+    .catch((err) => console.log(err));
+});
+
 //- listen to server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost${port}`);

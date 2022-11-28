@@ -1,4 +1,12 @@
 <p>{{todo.name}}</p>
-{{! detail 頁面加入可導向編輯頁面的連結 }}
-<a href="/todos/{{todo._id}}/edit"> edit</a>
 <a href="/">Back</a>
+{{! detail 頁面加入可導向編輯頁面的連結 }}
+<a href="/todos/{{todo._id}}/edit"> Edit</a>
+{{! 新增delete請求，因a tag只能發送GET，故使用form，並改變為inline排版對齊a tag }}
+<form
+  action="/todos/{{todo._id}}/delete"
+  method="POST"
+  style="display: inline;"
+>
+  <button type="submit">Delete</button>
+</form>
