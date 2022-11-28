@@ -57,6 +57,16 @@ app.post("/todos", (req, res) => {
     .catch((err) => console.log(err));
 });
 
+//* 導向todo detail頁面
+app.get("/todos/:id", (req, res) => {
+  const id = req.params.id;
+  // !從db中Todo物件找尋對應id的todo，並傳給detail頁面渲染
+  return Todo.findById(id)
+    .lean()
+    .then((todo) => res.render("detail", { todo }))
+    .catch((err) => console.log(err));
+});
+
 //- listen to server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost${port}`);
