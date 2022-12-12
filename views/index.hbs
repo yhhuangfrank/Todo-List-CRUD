@@ -3,6 +3,7 @@
 <ul>
   {{#each todos}}
     <li>
+      <input type="checkbox" name="isDone" {{#if this.isDone}} checked {{/if}} disabled>
       {{this.name}}
       {{! 為每個項目加上detail頁面連結，此處的id為MongoDB自動產生的流水號 }}
       <a href="/todos/{{this._id}}"> Detail</a>
@@ -17,6 +18,5 @@
         <button type="submit">Delete</button>
       </form>
     </li>
-
   {{/each}}
 </ul>

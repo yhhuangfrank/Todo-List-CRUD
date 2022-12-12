@@ -1,5 +1,6 @@
 {{! 修改todo頁面 }}
 <form action="/todos/{{todo._id}}/edit" method="POST">
+  <input type="checkbox" name="isDone" {{#if todo.isDone}} checked {{/if}}>
   <input type="text" name="name" placeholder="name" value="{{todo.name}}" />
   <button type="submit">Save</button>
   <a href="/">Back</a>

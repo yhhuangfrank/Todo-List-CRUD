@@ -79,11 +79,12 @@ app.get("/todos/:id/edit", (req, res) => {
 //* 收到edit表單POST請求
 app.post("/todos/:id/edit", (req, res) => {
   const id = req.params.id;
-  const name = req.body.name;
+  const { name, isDone } = req.body; //- 獲取req.body的name, isDone值
   return Todo.findById(id)
     .then((todo) => {
       //-將新的name更新到todo.name
       todo.name = name;
+      todo.isDone = isDone === "on"; //- 如果checked會得到on，將todo.isDone設為true, 反之則false
       return todo.save(); //-將更新好的todo儲存至db
     })
     .then(() => res.redirect(`/todos/${id}`)) //-更新成功則重新導向對應id的detail頁面
