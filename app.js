@@ -3,6 +3,8 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const bodyParser = require("body-parser");
+//- 引入method-override將form的POST請求改寫
+const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
 //* 引入todo model
@@ -35,6 +37,8 @@ app.set("view engine", "hbs");
 
 //- bodyparser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
+//- method-override middleware
+app.use(methodOverride("_method"))
 
 //- set route
 app.get("/", (req, res) => {
@@ -77,8 +81,8 @@ app.get("/todos/:id/edit", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-//* 收到edit表單POST請求
-app.post("/todos/:id/edit", (req, res) => {
+//* 收到edit表單修改請求 (使用PUT請求)
+app.put("/todos/:id", (req, res) => {
   const id = req.params.id;
   const { name, isDone } = req.body; //- 獲取req.body的name, isDone值
   return Todo.findById(id)
@@ -93,7 +97,7 @@ app.post("/todos/:id/edit", (req, res) => {
 });
 
 //* 刪除todo請求
-app.post("/todos/:id/delete", (req, res) => {
+app.delete("/todos/:id", (req, res) => {
   const id = req.params.id;
   return Todo.findById(id)
     .then((todo) => todo.remove())
