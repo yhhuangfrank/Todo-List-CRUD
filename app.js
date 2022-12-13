@@ -7,8 +7,8 @@ const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
 const exphbs = require("express-handlebars");
-//* 引入todo model
-const Todo = require("./models/todo");
+//- 引入router
+const routes = require("./routes/index");
 
 //- 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== "production") {
@@ -38,72 +38,10 @@ app.set("view engine", "hbs");
 //- bodyparser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 //- method-override middleware
-app.use(methodOverride("_method"))
+app.use(methodOverride("_method"));
 
 //- set route
-app.get("/", (req, res) => {
-  //- 取出Todo modeal 的所有資料
-  Todo.find()
-    .lean() //- 把Mongoose的model 物件轉為乾淨的Javascript資料陣列
-    .sort({ _id: "asc" }) //- 使用sort將獲取資料排序，此處透過_id進行升冪排序(表示資料建立時序)，降冪排序則使用desc
-    .then((todos) => res.render("index", { todos })) //- 將資料傳給index模板
-    .catch((error) => console.error(error)); //- 錯誤處理
-});
-
-//* 新增頁面讓使用者新增新的todo
-app.get("/todos/new", (req, res) => {
-  return res.render("new");
-});
-//* 填寫完新todo的表單後，送往db更新
-app.post("/todos", (req, res) => {
-  const name = req.body.name;
-  return Todo.create({ name })
-    .then(() => res.redirect("/")) //-新增到db後導回首頁
-    .catch((err) => console.log(err));
-});
-
-//* 導向todo detail頁面
-app.get("/todos/:id", (req, res) => {
-  const id = req.params.id;
-  // !從db中Todo物件找尋對應id的todo，並傳給detail頁面渲染
-  return Todo.findById(id)
-    .lean()
-    .then((todo) => res.render("detail", { todo }))
-    .catch((err) => console.log(err));
-});
-
-//* 導向修改todo內容頁面
-app.get("/todos/:id/edit", (req, res) => {
-  const id = req.params.id;
-  return Todo.findById(id)
-    .lean()
-    .then((todo) => res.render("edit", { todo }))
-    .catch((err) => console.log(err));
-});
-
-//* 收到edit表單修改請求 (使用PUT請求)
-app.put("/todos/:id", (req, res) => {
-  const id = req.params.id;
-  const { name, isDone } = req.body; //- 獲取req.body的name, isDone值
-  return Todo.findById(id)
-    .then((todo) => {
-      //-將新的name更新到todo.name
-      todo.name = name;
-      todo.isDone = isDone === "on"; //- 如果checked會得到on，將todo.isDone設為true, 反之則false
-      return todo.save(); //-將更新好的todo儲存至db
-    })
-    .then(() => res.redirect(`/todos/${id}`)) //-更新成功則重新導向對應id的detail頁面
-    .catch((err) => console.log(err)); //-更新失敗的話則報錯誤
-});
-
-//* 刪除todo請求
-app.delete("/todos/:id", (req, res) => {
-  const id = req.params.id;
-  return Todo.findById(id)
-    .then((todo) => todo.remove())
-    .then(() => res.redirect("/"))
-    .catch((err) => console.log(err));
-});
+app.use(routes);
 
 //- listen to server
 app.listen(port, () => {
