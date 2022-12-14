@@ -1,8 +1,16 @@
 {{! 修改todo頁面 }}
 {{!-- 透過method-override將form的POST請求改成PUT --}}
-<form action="/todos/{{todo._id}}?_method=PUT" method="POST">
-  <input type="checkbox" name="isDone" {{#if todo.isDone}} checked {{/if}}>
-  <input type="text" name="name" placeholder="name" value="{{todo.name}}" />
-  <button type="submit">Save</button>
-  <a href="/">Back</a>
+<form
+  action="/todos/{{todo._id}}?_method=PUT"
+  method="POST"
+  style="display: inline;"
+>
+  <div class="input-group mb-3">
+    <div class="input-group-text">
+      <input type="checkbox" name="isDone" {{#if todo.isDone}} checked {{/if}}> 
+    </div>
+      <input type="text" class="form-control" name="name" value="{{todo.name}}"> 
+      <button class="btn btn-outline-success" type="submit">Save</button>
+      <a class="btn btn-outline-dark" href="/todos/{{todo._id}}">Back</a>
+  </div>
 </form>
