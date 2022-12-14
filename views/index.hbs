@@ -1,22 +1,26 @@
-{{! 新增一個create 按鈕，導去/new頁面 }}
-<a href="/todos/new">Create</a>
-<ul>
+<ul class="list-group">
   {{#each todos}}
-    <li>
-      <input type="checkbox" name="isDone" {{#if this.isDone}} checked {{/if}} disabled>
-      {{this.name}}
-      {{! 為每個項目加上detail頁面連結，此處的id為MongoDB自動產生的流水號 }}
-      <a href="/todos/{{this._id}}"> Detail</a>
-      {{! 新增可供編輯的連結，導向對應頁面 }}
-      <a href="/todos/{{this._id}}/edit"> Edit</a>
-      {{! 新增delete請求，因a tag只能發送GET，故使用form，並改變為inline排版對齊a tag }}
-      <form
-        action="/todos/{{this._id}}?_method=DELETE"
-        method="POST"
-        style="display: inline;"
-      >
-        <button type="submit">Delete</button>
-      </form>
+    <li class="list-group-item">
+      <div class="row">
+        <div class="col-auto me-auto">
+          <input style="vertical-align:middle" type="checkbox" name="isDone" {{#if this.isDone}} checked {{/if}} disabled>
+          <h4 style="display: inline; vertical-align:middle" class="my-0 ms-2">{{this.name}}</h4>
+        </div>
+        <div class="col-auto">
+        {{! 為每個項目加上detail頁面連結，此處的id為MongoDB自動產生的流水號 }}
+          <a class="btn btn-outline-primary" href="/todos/{{this._id}}"> Detail</a>
+          {{! 新增可供編輯的連結，導向對應頁面 }}
+          <a class="btn btn-outline-secondary" href="/todos/{{this._id}}/edit"> Edit</a>
+          {{! 新增delete請求，因a tag只能發送GET，故使用form，並改變為inline排版對齊a tag }}
+          <form
+            action="/todos/{{this._id}}?_method=DELETE"
+            method="POST"
+            style="display: inline;"
+          >
+            <button class="btn btn-outline-danger" type="submit">Delete</button>
+          </form>
+        </div>
+      </div>
     </li>
   {{/each}}
 </ul>
