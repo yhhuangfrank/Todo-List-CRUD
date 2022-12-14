@@ -14,7 +14,9 @@ if (process.env.NODE_ENV !== "production") {
 //- 連線monggose
 require("./config/mongoose");
 const app = express();
-const port = 3000;
+//- 如果在 Heroku 環境則使用 process.env.PORT
+//- 否則為本地環境，使用 3000
+const PORT = process.env.PORT || 3000;
 
 //- set view engine (handlebars)，設定extname(副檔名為".hbs")
 app.engine("hbs", exphbs({ defaultLayouts: "main", extname: ".hbs" }));
@@ -29,6 +31,6 @@ app.use(methodOverride("_method"));
 app.use(routes);
 
 //- listen to server
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost${PORT}`);
 });
