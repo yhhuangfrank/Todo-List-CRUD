@@ -10,7 +10,7 @@
         {{! 為每個項目加上detail頁面連結，此處的id為MongoDB自動產生的流水號 }}
           <a class="btn btn-outline-primary" href="/todos/{{this._id}}"> Detail</a>
           {{! 新增可供編輯的連結，導向對應頁面 }}
-          <a class="btn btn-outline-secondary" href="/todos/{{this._id}}/edit"> Edit</a>
+          <a class="btn btn-outline-dark" href="/todos/{{this._id}}/edit"> Edit</a>
           {{! 新增delete請求，因a tag只能發送GET，故使用form，並改變為inline排版對齊a tag }}
           <form
             action="/todos/{{this._id}}?_method=DELETE"
