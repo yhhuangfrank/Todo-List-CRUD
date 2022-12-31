@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 //- 引入method-override將form的POST請求改寫
 const methodOverride = require("method-override");
 const exphbs = require("express-handlebars");
+//- require connect-flash
+const flash = require("connect-flash");
 //- 引入router
 const routes = require("./routes/index");
 //- 使用passport套件
@@ -42,13 +44,19 @@ app.use(methodOverride("_method"));
 //- run usePassport
 usePassport(app);
 
+//- flash middleware
+app.use(flash());
+
 //- set res.locals variable for res.render
 app.use((req, res, next) => {
   //- 利用express.js提供res.locals存取req內常用資訊
   //- 並在render時提供給handle-bars
   res.locals.isAuthenticated = req.isAuthenticated();
-  //- 利用在deserialization step產生的req.user   
+  //- 利用在deserialization step產生的req.user
   res.locals.user = req.user;
+  //! flash msg setting
+  res.locals.success_msg = req.flash("success_msg");
+  res.locals.warning_msg = req.flash("warning_msg");
   next();
 });
 
