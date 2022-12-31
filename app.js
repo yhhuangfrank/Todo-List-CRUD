@@ -42,6 +42,17 @@ app.use(methodOverride("_method"));
 //- run usePassport
 usePassport(app);
 
+//- set res.locals variable for res.render
+app.use((req, res, next) => {
+  //- 利用express.js提供res.locals存取req內常用資訊
+  //- 並在render時提供給handle-bars
+  console.log(req.user);
+  res.locals.isAuthenticated = req.isAuthenticated();
+  //- 利用在deserialization step產生的req.user   
+  res.locals.user = req.user;
+  next();
+});
+
 //- set route
 app.use(routes);
 

@@ -13,8 +13,15 @@
   <body class="bg-light">
     <header>
       <nav class="navbar navbar-dark bg-primary" style="padding: 0 1rem">
-        <a class="navbar-brand fw-bold fs-2" href="/">My Todo List</a>
-        <a class="btn btn-outline-light" href="/todos/new">Create</a>
+        {{! check authentication }}
+        <a class="navbar-brand fw-bold fs-2" href="/">
+          {{#if user}}{{user.name}}'s {{/if}}
+          Todo List</a>
+        {{#if isAuthenticated}}
+          <a class="btn btn-outline-light" href="/users/logout">Logout</a>
+        {{else}}
+          <a class="btn btn-outline-light" href="/users/login">Login</a>
+        {{/if}}
       </nav>
     </header>
     <div class="container mt-3">
