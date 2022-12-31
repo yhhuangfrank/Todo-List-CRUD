@@ -1,5 +1,7 @@
 //- require related modules
 const express = require("express");
+//- require express-session
+const session = require("express-session");
 const bodyParser = require("body-parser");
 //- 引入method-override將form的POST請求改寫
 const methodOverride = require("method-override");
@@ -22,6 +24,15 @@ const PORT = process.env.PORT || 3000;
 app.engine("hbs", exphbs({ defaultLayouts: "main", extname: ".hbs" }));
 app.set("view engine", "hbs");
 
+//- use express-seesion
+app.use(
+  session({
+    secret: "MySessionSecret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false },
+  })
+);
 //- bodyparser middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 //- method-override middleware
