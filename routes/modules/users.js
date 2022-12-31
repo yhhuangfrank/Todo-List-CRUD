@@ -2,10 +2,21 @@
 const router = require("express").Router();
 //- require User model
 const User = require("../../models/user");
+//- require passport
+const passport = require("passport");
 
 router.get("/login", (req, res) => {
   return res.render("login");
 });
+
+router.post(
+  "/login",
+  //- 執行passport.authenticate middleware
+  passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/users/login",
+  })
+);
 
 router.get("/register", (req, res) => {
   return res.render("register");

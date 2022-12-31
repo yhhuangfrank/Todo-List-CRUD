@@ -8,6 +8,8 @@ const methodOverride = require("method-override");
 const exphbs = require("express-handlebars");
 //- 引入router
 const routes = require("./routes/index");
+//- 使用passport套件
+const usePassport = require("./config/passport");
 
 //- 加入這段 code, 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== "production") {
@@ -37,6 +39,8 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true }));
 //- method-override middleware
 app.use(methodOverride("_method"));
+//- run usePassport
+usePassport(app);
 
 //- set route
 app.use(routes);
