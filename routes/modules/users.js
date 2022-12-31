@@ -50,4 +50,11 @@ router.post("/register", (req, res) => {
       console.log(err);
     });
 });
+
+router.get("/logout", (req, res) => {
+  req.logout((err) => {
+    if (err) {return next(err)}
+    res.redirect("/users/login");
+  }); //- passport will clear original session and req.user
+});
 module.exports = router;
