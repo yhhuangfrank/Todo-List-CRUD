@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 //* 取得資料庫連線狀態
 const db = mongoose.connection;
@@ -16,4 +17,4 @@ db.once("open", () => {
 });
 
 //- 匯出db讓其他檔案使用
-module.exports = db
+module.exports = db;

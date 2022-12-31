@@ -15,6 +15,13 @@ const todoSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  //- 新增userId代表個別的使用者
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    index: true, //- 建立索引方便查找
+    required: true,
+  }
 });
 
 //- 將建立好的todoSchema透過mongoose.model匯出供其他檔案引入
