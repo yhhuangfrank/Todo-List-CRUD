@@ -14,6 +14,7 @@ router.post(
   //- 執行passport.authenticate middleware
   passport.authenticate("local", {
     successRedirect: "/",
+    failureFlash: true,
     failureRedirect: "/users/login",
   })
 );

@@ -22,12 +22,12 @@ module.exports = (app) => {
           .then((user) => {
             if (!user) {
               return done(null, false, {
-                message: "This user is not registered!",
+                message: "This user is not registered！",
               });
             }
             if (user.password !== password) {
               return done(null, false, {
-                message: "Your password is incorrect!",
+                message: "Your password is incorrect！",
               });
             }
             //- login success
