@@ -4,6 +4,8 @@ const router = require("express").Router();
 const User = require("../../models/user");
 //- require passport
 const passport = require("passport");
+//- require bcrypt
+const bcrypt = require("bcryptjs");
 
 router.get("/login", (req, res) => {
   return res.render("login");
@@ -59,12 +61,18 @@ router.post("/register", (req, res) => {
         });
       }
       //- create new user
+      //- hash password by bcrypt
       console.log("Find new User!");
-      return User.create({
-        name,
-        email,
-        password,
-      })
+      return bcrypt
+        .genSalt(10) //- 輸入複雜度產生salt
+        .then((salt) => bcrypt.hash(password, salt)) //- 雜湊處理
+        .then((hash) =>
+          User.create({
+            name,
+            email,
+            password: hash, //- 儲存hash value
+          })
+        )
         .then(() => {
           req.flash("success_msg", "註冊成功!可登入系統了!");
           res.redirect("/users/login");
