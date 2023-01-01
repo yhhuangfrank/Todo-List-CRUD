@@ -13,7 +13,7 @@ const routes = require("./routes/index");
 //- 使用passport套件
 const usePassport = require("./config/passport");
 
-//- 加入這段 code, 僅在非正式環境時, 使用 dotenv
+//- 僅在非正式環境時, 使用 dotenv
 if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
@@ -22,7 +22,7 @@ require("./config/mongoose");
 const app = express();
 //- 如果在 Heroku 環境則使用 process.env.PORT
 //- 否則為本地環境，使用 3000
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 //- set view engine (handlebars)，設定extname(副檔名為".hbs")
 app.engine("hbs", exphbs({ defaultLayouts: "main", extname: ".hbs" }));
@@ -31,7 +31,7 @@ app.set("view engine", "hbs");
 //- use express-seesion
 app.use(
   session({
-    secret: "MySessionSecret",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false },

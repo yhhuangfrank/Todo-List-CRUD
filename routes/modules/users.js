@@ -50,7 +50,6 @@ router.post("/register", (req, res) => {
   return User.findOne({ email })
     .then((user) => {
       if (user) {
-        console.log("User already exists!");
         errors.push({ message: "您已經註冊過囉!" });
         return res.render("register", {
           errors,
@@ -62,7 +61,6 @@ router.post("/register", (req, res) => {
       }
       //- create new user
       //- hash password by bcrypt
-      console.log("Find new User!");
       return bcrypt
         .genSalt(10) //- 輸入複雜度產生salt
         .then((salt) => bcrypt.hash(password, salt)) //- 雜湊處理
